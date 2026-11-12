@@ -1,0 +1,9 @@
+{
+  "name": "event-gate",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Ad conversion events cleaned, hashed and matched by event_id before they leave for Meta.",
+  "scripts": { "test": "node --test" },
+  "license": "MIT"
+}

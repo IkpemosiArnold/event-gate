@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Event Gate</title>
+<meta name="description" content="Ad conversion events from a browser pixel and a server, cleaned of health details, hashed and matched by event_id before they leave for Meta. Sample data.">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#fbfbfe">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#060b25">
+<link rel="icon" href="data:,">
+<link rel="preload" href="fonts/geist.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/sintony-700.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-check" viewBox="0 0 16 16"><path d="M3.5 8.5l3 3 6-7" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-cross" viewBox="0 0 16 16"><path d="M4.5 4.5l7 7M11.5 4.5l-7 7" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></symbol>
+  <symbol id="i-chev" viewBox="0 0 16 16"><path d="M6 3.5L10.5 8 6 12.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</svg>
+<main class="shell">
+  <header class="top">
+    <p class="mark">Event Gate</p>
+    <h1>Meta gets the sale, never the diagnosis.</h1>
+    <p class="sub">Browser pixel and server events from a made-up telehealth clinic, cleaned, hashed and matched by event_id before they leave.</p>
+  </header>
+
+  <section class="reading" aria-label="What would be sent">
+    <p class="summary" id="summary" role="status"><span class="sum-main">Checking</span></p>
+    <p class="sum-line" id="sum-line"></p>
+    <a class="jump" href="#hand">Then check a batch built without the gate</a>
+    <div id="groups" class="groups"></div>
+  </section>
+
+  <section class="tool" id="hand" aria-labelledby="hand-h">
+    <h2 id="hand-h">A batch built without the gate</h2>
+    <p class="tool-sub">Eight Conversions API events the way a quick integration might send them, checked against the same browser events. Six mistakes are planted.</p>
+    <p class="summary small" id="hand-summary" role="status"></p>
+    <p class="sum-line" id="hand-line"></p>
+    <div class="actions">
+      <button type="button" id="hand-gate" class="btn primary">Run it through the gate</button>
+      <button type="button" id="hand-edit" class="btn text" aria-expanded="false" aria-controls="hand-box">Edit the JSON</button>
+      <button type="button" id="hand-reset" class="btn text" hidden>Reset sample</button>
+    </div>
+    <div id="hand-box" class="box" hidden>
+      <label class="sr" for="hand-in">Batch as JSON</label>
+      <textarea id="hand-in" rows="12" spellcheck="false" autocomplete="off" autocapitalize="off"></textarea>
+      <div class="actions">
+        <button type="button" id="hand-check" class="btn secondary">Check this JSON</button>
+      </div>
+      <p id="hand-error" class="error" role="alert" hidden></p>
+    </div>
+    <div id="hand-rows" class="rows"></div>
+  </section>
+
+  <section class="notes" aria-labelledby="rules-h">
+    <h2 id="rules-h">The rules it applies</h2>
+    <ul class="rules">
+      <li>A browser event and a server event are one conversion when <code>event_name</code> and <code>event_id</code> match and the second arrives within 48 hours of the first. After that, Meta counts both.</li>
+      <li>For website events, <code>event_time</code> is at most 7 days old. One older event and Meta rejects the whole request, so it is held here instead.</li>
+      <li>Email, phone, name, city, state, zip, country, birth date, gender and external_id are SHA-256 hashed. Email, phone and name are normalised first and tested against Meta's own worked examples. IP, user agent, fbp and fbc are sent as they are.</li>
+      <li>URLs keep the domain and a short list of campaign params. A path or param with a health term goes, and so does every custom field not on the list.</li>
+    </ul>
+    <p class="fine">Times are read against a sample clock, 12 Nov 2026 at 09:00 GMT. The health term list is a short sample. It catches the names it knows and misses new brands and misspellings.</p>
+  </section>
+
+  <footer class="foot">
+    <p>Built by Arnold Ikpemosi Adeyemi. Sample data only, not legal advice. Not affiliated with Meta.</p>
+    <p><a href="https://ikpemosi.work">ikpemosi.work</a> <span aria-hidden="true">·</span> <a href="https://github.com/IkpemosiArnold/event-gate">Source on GitHub</a></p>
+  </footer>
+</main>
+<script type="module" src="app.js"></script>
+</body>
+</html>
